@@ -1,47 +1,6 @@
 import { AIQ } from 'https://deno.land/x/aiq@0.0.0/mod.ts'
-
-export interface Lazy<T> { ():Promise<T> }
-
-export class Gate<T> {
-
-    promise:Promise<T>
-    resolve:(value:T)=>void
-    reject:(reason:unknown)=>void
-
-    constructor() {
-        const { promise, resolve, reject } = Promise.withResolvers<T>()
-        this.promise = promise
-        this.resolve = resolve
-        this.reject = reject
-    }
-
-}
-
-export type SomeSnail = <R>(f:<T>(Snail:Snail<T>)=>R)=>R
-
-export class Snail<T> {
-
-    lazy:Lazy<T>
-    born:Promise<void>
-    died:Promise<T>
-
-    constructor(lazy:Lazy<T>) {
-        const bornGate = new Gate<void>()
-        const diedGate = new Gate<T>()
-        this.born = bornGate.promise
-        this.died = diedGate.promise
-        this.lazy = () => {
-            bornGate.resolve()
-            lazy()
-                .then(diedGate.resolve)
-                .catch(reason => { diedGate.reject(reason) })
-            return diedGate.promise
-        }
-    }
-
-    static some<T>(snail:Snail<T>):SomeSnail { return f => f(snail) } 
-
-}
+import { Lazy } from 'https://deno.land/x/lazy_promise@0.0.1/mod.ts'
+import { Snail, SomeSnail } from 'https://deno.land/x/snail@0.0.0/mod.ts'
 
 export class Toad {
 
