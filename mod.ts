@@ -1,36 +1,38 @@
 import { AIQ } from 'https://deno.land/x/aiq@0.0.0/mod.ts'
 import { Lazy } from 'https://deno.land/x/lazy_promise@0.0.1/mod.ts'
 import { Snail, SomeSnail } from 'https://deno.land/x/snail@0.0.0/mod.ts'
+import { KvCache } from '../kvcache/mod.ts'
 
 export class Toad {
 
-    delay:number
+    c_delay:KvCache<number>
     #someSnails:AIQ<SomeSnail>
 
-    constructor(delay:number) {
-        this.delay = delay
+    constructor(kvCache:KvCache<number>) {
+        this.c_delay = kvCache
         this.#someSnails = new AIQ<SomeSnail>()
         this.eat()
     }
 
     async eat() {
         for await (const someSnail of this.#someSnails)
-            await someSnail(<T>(snail:Snail<T>) => snail.lazy())
-                .catch(() => {})
+            await someSnail(<T>(snail:Snail<T>) => snail.lazy().catch(() => {}))
+                
     }
 
     feed<T>(snail:Snail<T>) {
-        snail.born.then(() => this.#digest())
+        snail.born.then(async () => await this.#digest())
         const someSnail = Snail.some(snail)
         this.#someSnails.push(someSnail)
         return snail.died
     }
 
-    #digest() {
-        const promise = new Promise<void>(r => setTimeout(r, this.delay))
+    async #digest() {
+        const delay = await this.c_delay.get()
+        const promise = new Promise<void>(r => setTimeout(r, delay))
         const lazy:Lazy<void> = () => promise
-        const delay = new Snail(lazy)
-        const someSnail = Snail.some(delay)
+        const snail = new Snail(lazy)
+        const someSnail = Snail.some(snail)
         this.#someSnails.unshift(someSnail)
     }
 
