@@ -1,7 +1,7 @@
 import { AIQ } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/aiq@0.0.0/mod.ts'
 import { Lazy } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/lazy@0.0.0/mod.ts'
 import { Snail, SomeSnail } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.0/mod.ts'
-import { KvCache } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/kvcache@0.0.0-vertigo/mod.ts'
+import { KvCache } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/kvcache@0.0.2-vertigo/mod.ts'
 
 export class Toad {
 
