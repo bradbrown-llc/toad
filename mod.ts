@@ -1,6 +1,6 @@
 import { AIQ } from 'https://deno.land/x/aiq@0.0.1/mod.ts'
 import { Lazy } from 'https://deno.land/x/lazy_promise@0.0.1/mod.ts'
-import { Snail, SomeSnail } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.2/mod.ts'
+import { Snail, SomeSnail } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.3/mod.ts'
 
 export class Toad {
 
