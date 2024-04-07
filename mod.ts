@@ -35,4 +35,8 @@ export class Toad {
         this.#someSnails.unshift(someSnail)
     }
 
+    get queue() {
+        return this.#someSnails
+    }
+
 }
